@@ -1,0 +1,504 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital@1&display=swap');
+
+/* =========================
+   ROOT VARIABLES
+========================= */
+:root {
+    /* Instagram brand gradient stops */
+    --ig-yellow:  #f9ce34;
+    --ig-orange:  #ee2a7b;  /* warm orange-red */
+    --ig-pink:    #ee2a7b;
+    --ig-magenta: #c13584;
+    --ig-purple:  #833ab4;
+    --ig-indigo:  #5851db;
+
+    /* Surface palette */
+    --bg:         #0d0d14;
+    --surface:    rgba(255, 255, 255, 0.04);
+    --surface-2:  rgba(255, 255, 255, 0.08);
+    --border:     rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(238, 42, 123, 0.45);
+
+    /* Text */
+    --text:   #f5f5f5;
+    --muted:  rgba(245, 245, 245, 0.5);
+
+    /* Semantic */
+    --danger:  #ff375f;
+    --success: #30d158;
+    --info:    #0a84ff;
+
+    /* Shape */
+    --radius:    16px;
+    --radius-sm: 10px;
+    --radius-pill: 100px;
+
+    /* Spacing */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+}
+
+/* The gradient used everywhere — define once, reuse */
+.ig-gradient,
+.btn,
+.badge {
+    background: linear-gradient(
+        115deg,
+        #f9ce34 0%,
+        #ee2a7b 40%,
+        #833ab4 70%,
+        #5851db 100%
+    );
+}
+
+/* =========================
+   GLOBAL RESET & BASE
+========================= */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 40px;
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    background-color: var(--bg);
+
+    /* Soft ambient glow matching the IG palette */
+    background-image:
+        radial-gradient(ellipse 60% 50% at 15% 0%,   rgba(249, 206, 52,  0.12) transparent),
+        radial-gradient(ellipse 55% 45% at 85% 5%,   rgba(131, 58, 180, 0.18) transparent),
+        radial-gradient(ellipse 70% 60% at 50% 100%, rgba(238, 42,  123, 0.12) transparent);
+    min-height: 100vh;
+}
+
+/* =========================
+   TYPOGRAPHY
+========================= */
+h1, h2, h3, h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 0 0 var(--space-3);
+}
+
+/* =========================
+   NAVBAR
+========================= */
+nav {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-pill);
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.06) inset,
+        0 8px 32px rgba(0, 0, 0, 0.45);
+    position: sticky;
+    top: 16px;
+    z-index: 100;
+}
+
+/* Instagram wordmark feel for brand text in nav */
+nav .brand {
+    font-weight: 600;
+    font-size: 1.1rem;
+    background: linear-gradient(115deg, #f9ce34, #ee2a7b, #833ab4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* =========================
+   NAV LINKS
+========================= */
+ul {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s, opacity 0.2s;
+    position: relative;
+}
+
+a:hover {
+    color: var(--text);
+}
+
+/* Gradient underline on hover */
+a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ee2a7b, #833ab4);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: left;
+}
+
+a:hover::after {
+    transform: scaleX(1);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.btn {
+    /* gradient set via .ig-gradient above */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border: none;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.2s ease;
+    box-shadow: 0 4px 20px rgba(238, 42, 123, 0.35);
+}
+
+/* Shimmer sweep */
+.btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.25) 50%, transparent 65%);
+    transform: translateX(-100%);
+    transition: transform 0.55s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 32px rgba(238, 42, 123, 0.5);
+    color: #fff;
+}
+
+.btn:hover::before {
+    transform: translateX(100%);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn--wide {
+    min-width: 200px;
+    height: 44px;
+}
+
+/* Ghost variant */
+.btn--ghost {
+    background: transparent;
+    border: 1.5px solid rgba(238, 42, 123, 0.5);
+    color: #ee2a7b;
+    box-shadow: none;
+}
+
+.btn--ghost:hover {
+    background: rgba(238, 42, 123, 0.08);
+    border-color: #ee2a7b;
+    color: #ee2a7b;
+    box-shadow: 0 0 20px rgba(238, 42, 123, 0.2);
+}
+
+.delete-btn {
+    background: var(--danger);
+    box-shadow: 0 4px 16px rgba(255, 55, 95, 0.35);
+}
+
+.delete-btn:hover {
+    box-shadow: 0 8px 24px rgba(255, 55, 95, 0.5);
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-5);
+}
+
+.flex_box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    justify-content: center;
+    align-items: center;
+}
+
+/* =========================
+   CARD
+========================= */
+.card {
+    width: 300px;
+    min-height: 300px;
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 0.5px solid var(--border);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transition:
+        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+    position: relative;
+}
+
+/* Gradient border reveal on hover via pseudo-element */
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    padding: 1px;
+    background: linear-gradient(135deg, #f9ce34, #ee2a7b, #833ab4, #5851db);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: calc(var(--radius) - 4px);
+    display: block;
+    margin-bottom: var(--space-3);
+}
+
+.card h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 6px 0 4px;
+    letter-spacing: -0.02em;
+}
+
+.card p {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* =========================
+   BADGE
+========================= */
+.badge {
+    /* gradient from .ig-gradient */
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    margin-bottom: 10px;
+    box-shadow: 0 2px 12px rgba(238, 42, 123, 0.4);
+}
+
+/* Text-only badge (outlined) */
+.badge--outline {
+    background: transparent;
+    border: 1px solid rgba(238, 42, 123, 0.5);
+    color: #ee2a7b;
+    box-shadow: none;
+}
+
+/* =========================
+   CARD FOOTER
+========================= */
+.footer {
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    border-top: 0.5px solid var(--border);
+}
+
+/* =========================
+   TEXTAREA
+========================= */
+.big-textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    resize: vertical;
+    border-radius: var(--radius-sm);
+    border: 0.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.big-textarea::placeholder {
+    color: var(--muted);
+}
+
+.big-textarea:focus {
+    border-color: rgba(238, 42, 123, 0.5);
+    box-shadow: 0 0 0 3px rgba(238, 42, 123, 0.12);
+    background: var(--surface-2);
+}
+
+/* =========================
+   ALERTS & FLASH MESSAGES
+========================= */
+.alert,
+.flash {
+    width: min(80%, 600px);
+    margin: 12px auto;
+    padding: 13px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    color: #fff;
+}
+
+.alert.success { background: var(--success); }
+.alert.danger  { background: var(--danger); }
+.alert.info    { background: var(--info); }
+
+/* Tinted flash variants */
+.flash.success {
+    background: rgba(48, 209, 88, 0.1);
+    border: 0.5px solid var(--success);
+    color: #30d158;
+}
+
+.flash.danger {
+    background: rgba(255, 55, 95, 0.1);
+    border: 0.5px solid var(--danger);
+    color: #ff7b8e;
+}
+
+.flash.info {
+    background: rgba(10, 132, 255, 0.1);
+    border: 0.5px solid var(--info);
+    color: #5aaeff;
+}
+
+/* =========================
+   PAGE FOOTER
+========================= */
+footer {
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 0.5px solid var(--border);
+    color: var(--muted);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 120px;
+    padding: 28px var(--space-6);
+    font-size: 0.85rem;
+    letter-spacing: 0.01em;
+}
+
+footer a {
+    color: #ee2a7b;
+}
+
+footer a::after { display: none; }
+
+/* =========================
+   UTILITIES
+========================= */
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Gradient text utility */
+.gradient-text {
+    background: linear-gradient(115deg, #f9ce34, #ee2a7b, #833ab4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Subtle section divider */
+.divider {
+    height: 0.5px;
+    background: var(--border);
+    border: none;
+    margin: var(--space-6) 0;
+}
+
+/* Story ring — reusable avatar ring */
+.avatar-ring {
+    padding: 2px;
+    border-radius: 50%;
+    background: linear-gradient(115deg, #f9ce34, #ee2a7b, #833ab4);
+    display: inline-flex;
+}
+
+.avatar-ring img,
+.avatar-ring .avatar-inner {
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+    display: block;
+}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Add New Blog</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+    <input type="text" name="title" placeholder="Blog title" required>
+
+    <textarea name="content" placeholder="Blog content" required></textarea>
+
+    <input type="file" name="image" required>
+
+    <button type="submit">Add Blog</button>
+
+</form>
+
+{% endblock %}

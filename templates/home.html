@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div style="display:flex;justify-content:flex-end;margin-right:20px;">
+                <h4 class="alert flash-msg">{{ message }}</h4>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<h1>WELCOME TO MY HOME PAGE</h1>
+
+<div class="grid">
+
+{% for blog in blogs %}
+
+    <div class="card">
+
+        {% if blog.image %}
+        <img src="{{ url_for('static', filename='uploads/' + blog.image) }}"
+             alt="{{ blog.title }}">
+        {% endif %}
+
+        <h2>{{ blog.title }}</h2>
+
+        <p>
+            {{ blog.content[:100] }}...
+        </p>
+
+        <a href="{{ url_for('viewblog', title=blog.title) }}" class="btn">
+            View Blog
+        </a>
+
+        <a href="{{ url_for('updateblog', id=blog._id) }}" class="btn">
+            Update
+        </a>
+
+        <a href="{{ url_for('deleteuser', id=blog._id) }}"
+           class="btn delete-btn"
+           onclick="return confirm('Delete this blog?')">
+            Delete
+        </a>
+
+    </div>
+     <h2>Here, you can checkout our blogs</h2>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

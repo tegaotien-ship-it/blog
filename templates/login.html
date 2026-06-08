@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<h1 style="text-align:center; margin:20px;">Login Page</h1>
+
+<div class="centered">
+    <form method="POST">
+
+        <label>Email</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Password</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <input type="checkbox" name="remember">
+        <label>Remember Me</label><br><br>
+
+        <button type="submit">Submit</button>
+
+        <div style="display:flex; align-items:center; gap:10px; margin-top:40px;">
+            <h3>Not Registered?</h3>
+
+            <a href="{{ url_for('register') }}"
+               style="
+                    padding:8px 15px;
+                    background-color:#007bff;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:5px;
+               ">
+                Register Here
+            </a>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

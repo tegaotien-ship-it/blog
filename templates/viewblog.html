@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div style="display: flex; justify-content: flex-end; margin-right: 20px; position: absolute; right: 20px;">
+            {% for message in messages %}
+                <h4 class="alert flash-msg">{{ message }}</h4>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<h1>Blog Details</h1>
+
+<div class="card">
+
+    <div class="badge">Blog</div>
+
+    {% if blog.image %}
+        <img src="{{ url_for('static', filename='uploads/' + blog.image) }}">
+    {% endif %}
+
+    <h2>{{ blog.title }}</h2>
+    <small>Posted on: {{ blog.date_posted.strftime('%B %d, %Y') }}</small>
+
+    <p>{{ blog.content }}</p>
+
+    <div class="card">
+        <span class="id">#{{ blog._id }}</span>
+
+        {% if current_user.is_authenticated and current_user.id == blog.user_id %}
+            <a href="{{ url_for('updateblog', id=blog._id) }}">
+                <button class="btn">Edit</button>
+            </a>
+
+            <!-- FIX: route is 'deleteuser', not 'deleteblog' -->
+            <a href="{{ url_for('deleteuser', id=blog._id) }}"
+               onclick="return confirm('Are you sure you want to delete this post?')">
+                <button class="btn">Delete</button>
+            </a>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

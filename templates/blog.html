@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+    <h1>Our Blog</h1>
+
+<div class="grid">
+
+    {% for blog in blogs %}
+
+    <div class="card">
+
+        <div class="badge">Blog</div>
+
+        <img src="{{ url_for('static', filename='uploads/' + blog.image) }}" alt="blog image">
+
+        <h2>{{ blog.title }}</h2>
+
+        <p class="title">{{ blog.content[:100] }}...</p>
+
+        <div class="footer">
+
+            <span class="id">#{{ blog.id }}</span>
+
+            <a href="{{ url_for('viewblog', id=blog.id) }}" class="btn">
+                View
+            </a>
+
+            <a href="{{ url_for('updateblog', id=blog.id) }}" class="btn">
+                Update
+            </a>
+
+            <a href="{{ url_for('delete_blog', id=blog.id) }}" class="btn delete-btn">
+                Delete
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
