@@ -7,6 +7,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.utils import secure_filename
 from sqlalchemy.exc import IntegrityError
 from froms import signUpfrom
+from signupform import MyRegisterForm
 
 app = Flask(__name__)
 app.secret_key = "pelz"
@@ -73,6 +74,7 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def home_page():
+    blog = Blog.query.all()
     
     return render_template('home.html', blogs=current_user.blogs)
 
@@ -123,6 +125,7 @@ def logout():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    signupform=MyRegisterForm()
     if request.method == 'POST':
         username = request.form['username']
         email    = request.form['email']
@@ -140,7 +143,7 @@ def register():
             db.session.rollback()          # ← required, clears the broken transaction
             flash('That username or email is already taken.', 'danger')
 
-    return render_template('register.html')
+    return render_template('register.html',form=signupform)
 
 
 # ── ADD BLOG ──

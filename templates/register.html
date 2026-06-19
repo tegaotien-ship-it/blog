@@ -19,20 +19,16 @@
 <div class="centered">
 
     <form method="POST">
+        <p>{{ form.name.label }} {{ form.name() }}</p>
+        <p>{{ form.email.label }} {{ form.email() }}</p>
+        <p>{{ form.password() }}</p>
+        <p>{{ form.confirm_password.label }} {{ form.confirm_password() }}</p>
 
-    <label>Name:</label><br>
-    <input type="text" name="username" required><br><br>
 
-    <label>Email:</label><br>
-    <input type="email" name="email" required><br><br>
+    <input type="submit" value="Submit">
 
-    <label>Password:</label><br>
-    <input type="password" name="password" required><br><br>
 
-    <label>Confirm Password:</label><br>
-    <input type="password" name="confirm" required><br><br>
-
-    <button type="submit">Submit</button>
+    
 
         <div style="display:flex; align-items:center; gap:10px; margin-top:40px;">
             <h3>Already Registered?</h3>
