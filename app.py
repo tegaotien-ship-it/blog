@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 from sqlalchemy.exc import IntegrityError
+from froms import signUpfrom
 
 app = Flask(__name__)
 app.secret_key = "pelz"
@@ -205,6 +206,12 @@ def deleteuser(id):
         db.session.rollback()
         flash('Something went wrong, please try again', "danger")
     return redirect(url_for('dashboard'))
+
+@app.route('/signup')
+def signup():
+    form=signUpfrom()
+    return render_template('signup.html', form=form)
+
 
 
 # ── UPDATE BLOG ──

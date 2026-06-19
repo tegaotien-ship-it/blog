@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2> Sign Up </h2>
+<form action="" method="post">
+    <p>
+        {{form.username.label}}<br>
+        {{form.username(size=30)}}
+    </p>
+    <p>
+        {{form.password.label}}<br>
+        {{form.password(size=30)}}
+    </p>
+    <p>
+        {{form.remember_me.label}}<br>
+        {{form.remember_me(size=30)}}
+    </p>
+    
+    <p>
+        {{form.salary.label}}<br>
+        {{form.salary(size=30)}}
+    </p>
+    <p>
+        {{form.gender.label}}<br>
+        {{form.gender(size=30)}}
+    </p>
+    <p>
+        {{form.country.label}}<br>
+        {{form.country(size=30)}}
+    </p>
+    <p>
+        {{form.message.label}}<br>
+        {{form.message(size=30)}}
+    </p>
+    <p>
+        {{form.photo.label}}<br>
+        {{form.photo(size=30)}}
+    </p>
+    <p>{{form.submit()}}</p>
+
+</form>
+
+{% endblock %}

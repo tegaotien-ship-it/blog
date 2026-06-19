@@ -21,6 +21,7 @@
 
         <div class="nav-links">
     <a href="{{ url_for('home_page') }}">Home</a>
+    <a href="{{ url_for('signup')}}">signup</a>
 
     {% if current_user.is_authenticated %}
         <a href="{{ url_for('dashboard') }}">Dashboard</a>
