@@ -3,10 +3,10 @@ from wtforms import StringField,EmailField,PasswordField
 
 from wtforms.validators import InputRequired,Email
 class MyRegisterForm(FlaskForm):
-    username=StringField('username', validators=[InputRequired()])
+    name=StringField('name', validators=[InputRequired()])
     email=EmailField(
         'Email',
         validators=[InputRequired(), Email()]
     )
-    Password=PasswordField('password', validators=[InputRequired()])
-    confirmPassword=PasswordField('ConfirmPassword', validators=[InputRequired()])
+    password=PasswordField('password', validators=[InputRequired()])
+    confirm_password=PasswordField('confirm_password', validators=[InputRequired()])
