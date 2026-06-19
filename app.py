@@ -72,11 +72,10 @@ def load_user(user_id):
 
 # ── HOME ──
 @app.route('/')
-@login_required
 def home_page():
-    blog = Blog.query.all()
-    
-    return render_template('home.html', blogs=current_user.blogs)
+    blogs = Blog.query.all()
+
+    return render_template('home.html', blogs=blogs)
 
 # ── DASHBOARD ──
 @app.route('/dashboard')
