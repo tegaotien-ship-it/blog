@@ -43,6 +43,7 @@ class Blog(db.Model):
     image = db.Column(db.String(200), nullable=True)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    created_at=db.Column(db.DateTime,default=datetime.utcnow)
 
     def __init__(self, title, content, user_id, image=None):
         self.title = title
@@ -73,7 +74,8 @@ def load_user(user_id):
 # ── HOME ──
 @app.route('/')
 def home_page():
-    blogs = Blog.query.all()
+    page=request.args.get("page",1,type=int)
+    blogs = Blog.query.paginate(page=page,per_page=4)
 
     return render_template('home.html', blogs=blogs)
 
@@ -126,9 +128,9 @@ def logout():
 def register():
     signupform=MyRegisterForm()
     if request.method == 'POST':
-        username = request.form['username']
-        email    = request.form['email']
-        password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
+        username = signupform.name.data
+        email    = signupform.email.data
+        password = bcrypt.generate_password_hash(signupform.password.data).decode('utf-8')
 
         user = User(username=username, email=email, password=password)
         db.session.add(user)

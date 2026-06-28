@@ -6,7 +6,7 @@
 <a href="{{ url_for('add_blog_page') }}"><button>Add New Post</button></a>
 
 <h3>Your Posts:</h3>
-<ul>
+<ul style="display: flex; flex-wrap: wrap;">
   {% for blog in blogs %}
     <li class="card">
       <strong>{{ blog.title }}</strong>: {{ blog.content }}<br>

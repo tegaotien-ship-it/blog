@@ -25,6 +25,7 @@
     <small>Posted on: {{ blog.date_posted.strftime('%B %d, %Y') }}</small>
 
     <p>{{ blog.content }}</p>
+       <p>{{ blog.created_at }}</p>
 
     <div class="card">
         <span class="id">#{{ blog._id }}</span>
