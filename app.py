@@ -8,11 +8,27 @@ from werkzeug.utils import secure_filename
 from sqlalchemy.exc import IntegrityError
 from froms import signUpfrom
 from signupform import MyRegisterForm
-
+from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Mail,Message
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError
+from wtforms.validators import DataRequired, Length,Email,EqualTo
+from flask_wtf import FlaskForm
 app = Flask(__name__)
 app.secret_key = "pelz"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blogs.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.config['SECRET_KEY'] = 'key'
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USE_SSL"] = False
+app.config['MAIL_USERNAME']="tegaotien@gmail.com"
+app.config['MAIL_PASSWORD']="cmgn ondw xgbo icps"
+app.config["MAIL_DEFAULT_SENDER"]="tegaotien@gmail.com"
+
+mail=Mail(app)
+
 
 # ── upload config ──
 UPLOAD_FOLDER = 'static/uploads'
@@ -63,8 +79,38 @@ class User(db.Model, UserMixin):
         self.username = username
         self.email = email
         self.password = password
+    def get_reset_token(self,expires_sec=1800):
+        s=URLSafeTimedSerializer(app.config["SECRET_KEY"])
+        return s.dumps({'user_id':self.id})
+    
+    @staticmethod
+    def verify_reset_token(token):
+        s=URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        try:
+            user_id=s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
 
 
+class RequestResetForm(FlaskForm):
+      email=StringField("Email",validators=[DataRequired(),Email()])
+      submit=SubmitField("Request Password Reset")
+    #   if email does not exist
+      def validate_email(self,email):
+          user=User.query.filter_by(email=email.data).first()
+          if user:
+              raise ValidationError("There is no account with that email,you must register first.")
+
+class ResetPasswordForm(FlaskForm):
+    password=PasswordField('Password',validators=[DataRequired()])
+    confirm_password = PasswordField(
+    'Confirm Password', 
+    validators=[DataRequired(), EqualTo('password', message='Passwords must match.')] # ⬅️ Pass 'password' here
+)
+
+
+    submit=SubmitField( "Reset Password")
 # FIX A: User.query.get() is removed in SQLAlchemy 2.x — use db.session.get() instead
 @login_manager.user_loader
 def load_user(user_id):
@@ -261,7 +307,50 @@ def updateblog(id):
 
     return render_template('updateblog.html', blog=blog)
 
+def send_reset_email(user):
+    token=User.get_reset_token(user)
 
+    msg=Message("Password Reset Request",sender='tegaotien@gmail.com',recipients=[user.email])
+    msg.body=f'''
+    To reset your password visit the following link:
+{url_for('reset_token',token=token, _external=True)}
+    if you did not make this request ignore this message
+ '''
+    mail.send(msg)
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RequestResetForm()
+    if request.method=="POST":
+       print(form.email.data)
+       user=User.query.filter_by(email=form.email.data).first()
+       print("user:",user)
+       send_reset_email(user)
+       flash("An Email have been sent with instructions to reset password","info")
+       return redirect(url_for("login"))
+    return render_template("resetpassword.html",form=form)
+    
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user=User.verify_reset_token(token)
+    if user is None:
+        flash("Thai is an invalid token","warning")
+        return redirect(url_for(reset_request))
+    form = ResetPasswordForm()
+    if request.method=="POST":
+       hashed_password=bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+       user.password=hashed_password
+       print("hashed_password",hashed_password)
+       db.session.commit()
+       flash("You password have been updated!","success")
+       return redirect(url_for("login"))
+    return render_template("resettoken.html",form=form)
+    
 
 
 

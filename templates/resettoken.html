@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+
+    <h2>reset password</h2>
+     <div class="centered">
+      <div style="display: flex;flex-direction: column;">
+        <div>
+          <form method="post" enctype="multipart/form-data">
+           {{form.password()}}
+           {{form.confirm_password}}
+           {{form.submit(class='submit')}}
+
+        </form>     
+      </div>
+      
+     
+    </div>
+  </div>
+   
+{% endblock %}
